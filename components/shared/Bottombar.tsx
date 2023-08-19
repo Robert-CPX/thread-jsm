@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-function BottomSidebar() {
+const BottomSidebar = () => {
   const pathname = usePathname()
   return (
     <section className="bottombar">
