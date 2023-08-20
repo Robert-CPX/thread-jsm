@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import User from "../models/user.model";
 import { connectToDB } from "../mongoose"
 
-interface UserParams {
+interface UserType {
   userId: string,
   username: string,
   name: string,
@@ -13,24 +13,37 @@ interface UserParams {
   path: string,
 }
 
-export const updateUser = async (user: UserParams): Promise<void> => {
-  connectToDB();
+export const updateUser = async ({userId,username, name, bio, image, path}: UserType): Promise<void> => {
   try {
+    connectToDB();
     await User.findOneAndUpdate(
-      {id: user.userId},
+      {id: userId},
       {
-        username: user.username.toLowerCase(),
-        name: user.name,
-        bio: user.bio,
-        image: user.image,
+        username: username.toLowerCase(),
+        name,
+        bio,
+        image,
         onboarded: true,
       },
       {upsert: true},
     );
-    if(user.path === 'profile/edit') {
-      revalidatePath(user.path);
+    if(path === 'profile/edit') {
+      revalidatePath(path);
     }
   } catch (error: any) {
     throw new Error(`Failed to create/update user: ${error.message}`);
+  }
+}
+
+export const fetchUser = async (userId: string) => {
+  try {
+    connectToDB();
+    return await User.findOne({ id: userId })
+    // .populate({
+    //   path: 'communities',
+    //   model: Community,
+    // })
+  } catch (error: any) {
+    throw Error(`Failed to fetch user: ${error.message}`);
   }
 }

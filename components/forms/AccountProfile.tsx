@@ -102,8 +102,7 @@ const AccountProfile = ({user, btnTitle}: Props) => {
   }
 
   return (
-    <div>
-      <Form {...form}>
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col justify-start gap-10">
         <FormField
           control={form.control}
@@ -136,6 +135,7 @@ const AccountProfile = ({user, btnTitle}: Props) => {
                   className='account-form_image-input'
                   onChange={(e) => handleImage(e, field.onChange)}/>
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -155,6 +155,7 @@ const AccountProfile = ({user, btnTitle}: Props) => {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -174,6 +175,7 @@ const AccountProfile = ({user, btnTitle}: Props) => {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -193,13 +195,13 @@ const AccountProfile = ({user, btnTitle}: Props) => {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
         <Button type="submit" className='bg-primary-500'>Submit</Button>
       </form>
     </Form>
-    </div>
   )
 }
 
