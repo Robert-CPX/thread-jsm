@@ -1,6 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs'
 import React from 'react'
-import '../globals.css'
+import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 

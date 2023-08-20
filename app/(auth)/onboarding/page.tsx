@@ -2,7 +2,7 @@ import AccountProfile from '@/components/forms/AccountProfile'
 import React from 'react'
 import { currentUser } from '@clerk/nextjs'
 
-const Onboarding = async () => {
+const Page = async () => {
   const user = await currentUser()
 
   const userInfo = {}// from api?
@@ -27,4 +27,4 @@ const Onboarding = async () => {
   )
 }
 
-export default Onboarding
+export default Page

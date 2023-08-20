@@ -20,7 +20,8 @@ import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
 import { isBase64Image } from '@/lib/utils';
 import { useUploadThing } from '@/lib/uploadthing';
-
+import { usePathname, useRouter } from 'next/navigation';
+import { updateUser } from '@/lib/actions/user.actions';
 interface Props {
   user: {
     id: string;
@@ -36,6 +37,8 @@ interface Props {
 const AccountProfile = ({user, btnTitle}: Props) => {
 
   const [files, setFiles] = useState<File[]>([])
+  const router = useRouter();
+  const pathname = usePathname();
 
   const { startUpload } = useUploadThing("media", {
     onClientUploadComplete: () => {
@@ -81,7 +84,21 @@ const AccountProfile = ({user, btnTitle}: Props) => {
         values.profile_photo = imgRes[0].url;
       }
     }
-    // TODO: update user profile
+
+    await updateUser({
+      userId: user.id,
+      name: values.name,
+      username: values.username,
+      image: values.profile_photo,
+      bio: values.bio,
+      path: pathname,
+    });
+
+    if(pathname === '/profile/edit') {
+      router.back();
+    } else {
+      router.push('/');
+    }
   }
 
   return (
