@@ -18,8 +18,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { ThreadValidation } from '@/lib/validations/thread';
 import { createThread } from '@/lib/actions/thread.actions';
 
-// import { updateUser } from '@/lib/actions/user.actions';
-
 interface Props {
   userId: string;
 }
