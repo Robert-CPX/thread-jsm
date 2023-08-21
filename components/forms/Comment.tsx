@@ -24,7 +24,7 @@ interface Props {
   currentUserImg: string;
   currentUserId: string;
 }
- 
+
 export const Comment = ({threadId, currentUserImg, currentUserId}: Props) => {
 
   const pathname = usePathname();
@@ -37,7 +37,6 @@ export const Comment = ({threadId, currentUserImg, currentUserId}: Props) => {
   })
 
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
-    console.log(currentUserId);
     await addCommentToThread(threadId, values.thread, currentUserId, pathname);
     form.reset();
   }
