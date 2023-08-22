@@ -5,6 +5,7 @@ import User from "../models/user.model";
 import { connectToDB } from "../mongoose"
 import Thread from "../models/thread.model";
 import { FilterQuery, SortOrder } from "mongoose";
+import Community from "../models/community.model";
 
 interface UserType {
   userId: string,
@@ -15,7 +16,7 @@ interface UserType {
   path: string,
 }
 
-export const updateUser = async ({userId,username, name, bio, image, path}: UserType): Promise<void> => {
+export const updateUser = async ({userId, username, name, bio, image, path}: UserType): Promise<void> => {
   try {
     connectToDB();
     await User.findOneAndUpdate(
@@ -41,10 +42,10 @@ export const fetchUser = async (userId: string) => {
   try {
     connectToDB();
     return await User.findOne({ id: userId })
-    // .populate({
-    //   path: 'communities',
-    //   model: Community,
-    // })
+    .populate({
+      path: 'communities',
+      model: Community,
+    })
   } catch (error: any) {
     throw Error(`Failed to fetch user: ${error.message}`);
   }
@@ -59,16 +60,23 @@ export const fetchUserPosts = async (userId: string) => {
       .populate({
         path: 'threads',
         model: Thread,
-        populate: {
-          path: 'children',
-          model: Thread,
-          populate: {
-            path: 'author',
-            model: User,
-            select: 'name image id'
-          }
-        }
-      })
+        populate: [
+          {
+            path: 'community',
+            model: Community,
+            select: 'name id iamge _id',
+          },
+          {
+            path: 'children',
+            model: Thread,
+            populate: {
+              path: 'author',
+              model: User,
+              select: 'name image id'
+            },
+          },
+        ],
+      });
       return userStuff;
 
   } catch (error: any) {
@@ -144,7 +152,7 @@ export const getActivities = async (userId: string) => {
       path: 'author',
       model: User,
       select: 'name image _id'
-    })
+    });
     return replies;
 
   } catch (error: any) {
